@@ -5,7 +5,6 @@ const path = require('path')
 
 const server = http.createServer((req, res) => {
   const filePath = path.join(__dirname, 'public', req.url === '/' ? 'home.html' : (req.url + (path.extname(req.url) ? '' : '.html')))
-  const contentType = (path.extname(filePath) === '.css' ? 'text/css' : path.extname(filePath) === '.js' ? 'text/css' : 'text/html')
 
   fs.readFile(filePath, (err, data) => {
     if (err) {
@@ -13,19 +12,9 @@ const server = http.createServer((req, res) => {
         if (err) {
           res.writeHead(500)
           res.end('Error')
-        } else {
-          res.writeHead(200, {
-            'Content-Type': 'text/html'
-          })
-          res.end(errData)
-        }
+        } else res.end(errData)
       })
-    } else {
-      res.writeHead(200, {
-        'Content-Type': contentType
-      })
-      res.end(data)
-    }
+    } else res.end(data)
   })
 })
 
