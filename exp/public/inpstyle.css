@@ -1,0 +1,13 @@
+title {
+  display: none;
+}
+
+* {
+  margin-left: auto;
+  margin-right: auto;
+  display: table;
+}
+
+form {
+  margin-top: 100px;
+}
