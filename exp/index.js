@@ -1,6 +1,5 @@
 const express = require("express")
 const fs = require("fs")
-const bodyParser = require("body-parser")
 
 const server = express()
 
@@ -10,7 +9,7 @@ let user = {
 }
 
 server.use(express.static(__dirname + "/public"))
-server.use(bodyParser.urlencoded({ extended: true }))
+server.use(express.urlencoded({ extended: true }))
 
 server.get('/', (req, res) => {
 
