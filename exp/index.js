@@ -1,5 +1,6 @@
 const express = require("express")
 const fs = require("fs")
+const { isBoolean } = require("util")
 
 const server = express()
 
@@ -7,6 +8,8 @@ let user = {
   name: "EscaperSK",
   pass: "ifhiehSK1"
 }
+
+server.set("view engine", "hbs")
 
 server.use(express.static(__dirname + "/public"))
 server.use(express.urlencoded({ extended: true }))
@@ -37,8 +40,22 @@ server.post('/register', (req, res, next) => {
 
   if (req.body.userName === user.name && req.body.userPass === user.pass)
   return res.send("Добро пожаловать")
-  else
-  res.end("")
+  else res.end("")
+})
+
+server.get('/websites', (req, res) => {
+
+  res.render('websites.hbs', {
+    title: "Список сайтов",
+    visible: req.query.vs === "false" ? false : true,
+    arr: [{
+      name: "YouTube",
+      ref: "https://www.youtube.com/"
+    }, {
+      name: "VK",
+      ref: "https://vk.com/"
+    }]
+  })
 })
 
 server.listen(3000, "127.0.0.1", () => {

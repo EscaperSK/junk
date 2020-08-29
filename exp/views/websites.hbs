@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{title}}</title>
+</head>
+<body>
+  <h1>{{title}}</h1>
+  {{#if visible}}
+  <h3>Веб-сайты</h3>
+  <ul>
+    {{#each arr}}
+    <li><a href="{{this.ref}}">{{this.name}}</a></li>
+    {{/each}}
+  </ul>
+  {{else}}
+  Тут ничего нет<br><br>
+  {{/if}}
+  <a href="/">Back home</a>
+</body>
+</html>
