@@ -1,0 +1,12 @@
+title {
+  display: none;
+}
+a {
+  display: inline;
+}
+
+* {
+  margin-left: auto;
+  margin-right: auto;
+  display: table;
+}
