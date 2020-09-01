@@ -1,4 +1,4 @@
-const { Router } = require("express")
+const { Router, request } = require("express")
 const router = Router()
 const mysql = require("mysql2")
 
@@ -24,38 +24,51 @@ router.get('/authorization', (req, res) => {
     title: "Authorization"
   })
 })
-
-router.post('/authorize', (req, res) => {
-  if (req.body.userName.length > 8) {
-      connection.query(`select * from (select name from users where name = '${req.body.userName}') as u1 left join (select pass from users where name = '${req.body.userName}' and pass = '${req.body.userPass}') as u2 on true`)
-        .then(result => {
-          if (result[0][0]) {
-            if (result[0][0].pass) {
-              console.log("Авторизация успешна")
-            } else {
-              console.log("Неверный пароль")
-            }
-          } else {
-            console.log("Нет пользователя с таким именем")
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    } else {
-      console.log("Нет пользователя с таким именем")
-    }
-  res.redirect('/')
+router.get('/:username', (req, res) => {
+  
+  res.render("clientpage", {
+    title: req.params['username'],
+    layout: "clientlayout"
+  })
 })
-router.post('/register', (req, res) => {
+
+router.post('/authorize', async (req, res) => {
+  let ok = false
+  if (req.body.userName.length > 8) {
+    await connection.query(`select * from (select name from users where binary name = '${req.body.userName}') as u1 left join (select pass from users where binary name = '${req.body.userName}' and binary pass = '${req.body.userPass}') as u2 on true`)
+      .then(result => {
+        if (result[0][0]) {
+          if (result[0][0].pass) {
+            console.log("Авторизация успешна")
+            ok = true
+          } else {
+            console.log("Неверный пароль")
+          }
+        } else {
+          console.log("Нет пользователя с таким именем")
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  } else {
+    console.log("Нет пользователя с таким именем")
+  }
+  if (ok) res.redirect(`/${req.body.userName}`)
+  else res.redirect('/authorization')
+})
+
+router.post('/register', async (req, res) => {
+  let ok = false
   if (req.body.userName.length > 8) {
     if (req.body.userPass.length > 8) {
-      connection.query(`select count(*)as'num' from users where name = '${req.body.userName}'`)
-        .then(result => {
+      await connection.query(`select count(*)as'num' from users where name = '${req.body.userName}'`)
+        .then(async result => {
           if (!result[0][0].num) {
-            connection.query("insert into users (name, pass) values (?, ?)", [req.body.userName, req.body.userPass])
+            await connection.query("insert into users (name, pass) values (?, ?)", [req.body.userName, req.body.userPass])
               .then(result => {
                 console.log("Пользователь зарегистрирован")
+                ok = true
               })
               .catch(err => {
                 console.log(err)
@@ -73,7 +86,8 @@ router.post('/register', (req, res) => {
   } else {
     console.log("Имя слишком короткое")
   }
-  res.redirect('/')
+  if (ok) res.redirect(`/${req.body.userName}`)
+  else res.redirect('/registration')
 })
 
 module.exports = router
