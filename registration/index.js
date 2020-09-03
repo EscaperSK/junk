@@ -1,17 +1,17 @@
-const path = require("path")
-const express = require("express")
-const expHbs = require("express-handlebars")
-const router = require("./routes/router")
+const path = require('path')
+const express = require('express')
+const expHbs = require('express-handlebars')
+const router = require('./routes/router')
 
 const server = express()
 
-server.engine("hbs", expHbs({
-  defaultLayout: "layout",
-  extname: "hbs"
+server.engine('hbs', expHbs({
+  defaultLayout: 'layout',
+  extname: 'hbs'
 }))
-server.set("view engine", "hbs")
+server.set('view engine', 'hbs')
 
-server.use(express.static(path.join(__dirname, "public")))
+server.use(express.static(path.join(__dirname, 'public')))
 server.use(express.urlencoded({ extended: true }))
 server.use(router)
 

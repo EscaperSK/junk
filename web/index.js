@@ -1,5 +1,5 @@
-const http = require("http")
-const chalk = require("chalk")
+const http = require('http')
+const chalk = require('chalk')
 const fs = require('fs')
 const path = require('path')
 
@@ -19,4 +19,4 @@ const server = http.createServer((req, res) => {
 })
 
 const PORT = process.env.PORT || 3000
-server.listen(PORT, "127.0.0.1", () => console.log(chalk.yellow(`Сервер начал прослушивание запроса на порту ${PORT}`)))
+server.listen(PORT, '127.0.0.1', () => console.log(chalk.yellow(`Сервер начал прослушивание запроса на порту ${PORT}`)))
