@@ -1,2 +1,2 @@
-# registration
+# Registration
 Registration and authorization
